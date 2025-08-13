@@ -1,130 +1,102 @@
-# 🌸 Automatic Flower Classification
+# 🌸 Automatic Flower Classification (Streamlit)
 
-**Deep Learning model for automatic flower classification using CNN, FAISS, and LLaMA**
+A modern Streamlit application for automatic flower classification with a simple OpenCV-based classifier and an optional advanced ML/AI classifier. The UI and labels are localized in French.
 
-## 📋 Description
+## ✨ Features
 
-Ce projet implémente un système de classification automatique de fleurs utilisant des techniques avancées de Deep Learning. Le système combine un CNN (Convolutional Neural Network) pour l'extraction de caractéristiques, FAISS pour la recherche de similarité rapide, et LLaMA pour la génération de descriptions naturelles.
+- Classifies 5 flower species with confidence scores
+- Streamlit interface only (no Flask)
+- Optional advanced classifier with richer description output
+- French UI and labels
 
-## 🚀 Fonctionnalités
+## 🧱 Project Structure
 
-- **Classification automatique** de 5 espèces de fleurs
-- **Extraction de caractéristiques** avec CNN pré-entraîné
-- **Recherche de similarité** avec FAISS
-- **Génération de descriptions** avec LLaMA
-- **Interface utilisateur** intuitive
-- **API REST** pour l'intégration
-
-## 🌺 Espèces supportées
-
-1. **Daisy** (Marguerite)
-2. **Dandelion** (Pissenlit)
-3. **Rose** (Rose)
-4. **Sunflower** (Tournesol)
-5. **Tulip** (Tulipe)
-
-## 🛠️ Technologies utilisées
-
-- **Python 3.8+**
-- **TensorFlow/Keras** - Deep Learning
-- **FAISS** - Recherche de similarité
-- **LLaMA** - Génération de texte
-- **Flask** - API web
-- **OpenCV** - Traitement d'images
-- **NumPy/Pandas** - Manipulation de données
-
-## 📦 Installation
-
-### Prérequis
-```bash
-Python 3.8+
-pip
+```
+automatic-flower-classification/
+├── streamlit_app.py        # Streamlit interface
+├── simple_classifier.py    # OpenCV-based baseline classifier
+├── advanced_classifier.py  # Advanced ML/AI classifier
+├── config.py               # Paths, classes, app configs
+├── requirements.txt        # Python dependencies
+├── LICENSE                 # MIT License
+├── data/                   # (optional) dataset folder
+├── models/                 # (optional) trained models
+├── uploads/                # temp uploads
+├── results/                # saved results
+└── logs/                   # logs
 ```
 
-### Installation des dépendances
+## 🛠️ Requirements
+
+- Python 3.10+
+- See `requirements.txt` for full list (TensorFlow, OpenCV, Torch, Transformers, FAISS, etc.)
+
+Install dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
-## 🚀 Utilisation
+Note: Some packages (TensorFlow, Torch, FAISS) may require specific platform wheels. If installation fails, install them individually per your OS/GPU.
 
-### 1. Configuration
+## 🚀 Run Locally
+
+Run the Streamlit application:
+
 ```bash
-python config.py
+streamlit run streamlit_app.py
 ```
 
-### 2. Lancement
+## 📥 Datasets (Kaggle)
+
+This project can train an advanced model using these datasets:
+
+- l3llff/flowers
+- flower-photos by the TensorFlow team
+
+Use kagglehub to download them automatically:
+
 ```bash
-python main.py
+python scripts/download_datasets.py
 ```
 
-### 3. Interface web
-Ouvrez votre navigateur sur `http://localhost:5000`
+Note: kagglehub may require you to be signed in to Kaggle in your environment.
 
-## 📁 Structure du projet
+## 🧠 Train the Advanced Model (EfficientNet)
 
-```
-automatic-flower-classification/
-├── README.md              # Ce fichier
-├── requirements.txt       # Dépendances Python
-├── config.py             # Configuration du projet
-├── main.py               # Script principal
-├── LICENSE               # Licence MIT
-├── models/               # Modèles pré-entraînés
-├── data/                 # Données d'entraînement
-├── src/                  # Code source
-│   ├── cnn_model.py     # Modèle CNN
-│   ├── faiss_search.py  # Recherche FAISS
-│   ├── llama_gen.py     # Génération LLaMA
-│   └── utils.py         # Utilitaires
-└── tests/                # Tests unitaires
+Train a small EfficientNetB0 on the combined datasets and export to `models/`:
+
+```bash
+python scripts/train_efficientnet.py
 ```
 
-## 🔧 Configuration
+This produces:
 
-Modifiez `config.py` pour ajuster :
-- Chemins des modèles
-- Paramètres du CNN
-- Configuration FAISS
-- Paramètres LLaMA
+- `models/flower_efficientnet.keras`
+- `models/flower_labels.json`
 
-## 📊 Performance
+Once present, the app's advanced classifier will automatically use this model for inference. If absent, it falls back to the classical feature pipeline.
 
-- **Précision** : 95%+ sur le jeu de données de test
-- **Temps de réponse** : < 2 secondes
-- **Support** : 5 espèces de fleurs
+<!-- Flask REST API section removed: Streamlit-only project -->
 
-## 🤝 Contribution
+## ⚙️ Configuration
 
-Les contributions sont les bienvenues ! Veuillez :
-1. Fork le projet
-2. Créer une branche feature
-3. Commiter vos changements
-4. Pousser vers la branche
-5. Ouvrir une Pull Request
+Adjust settings in `config.py`:
 
-## 📄 Licence
+- `FLOWER_CLASSES` / `FLOWER_CLASSES_FR`
+- Model params in `CNN_CONFIG` (if used by advanced classifier)
 
-Ce projet est sous licence MIT. Voir `LICENSE` pour plus de détails.
+## 📦 Models
 
-## 👨‍💻 Auteur
+- `simple_classifier.py`: OpenCV-based heuristic approach
+- `advanced_classifier.py`: ML/AI pipeline (can leverage TensorFlow/Torch)
 
-**Imad SANOUSSI**
-- GitHub: [@ImadSANOUSSI](https://github.com/ImadSANOUSSI)
-- Portfolio: [Portfolio Web](https://imadsanoussi.github.io)
+If no model is available/import fails, the apps gracefully fall back to mock classification for demo purposes.
 
-## 🙏 Remerciements
+## 🧹 Housekeeping
 
-- Dataset: [Flower Classification Dataset](https://www.kaggle.com/datasets/alxmamaev/flowers-recognition)
-- Modèles pré-entraînés: TensorFlow Hub
-- Architecture inspirée de recherches récentes en Computer Vision
+Empty folders like `data/` and `models/` are optional. Feel free to remove them if unused.
 
-## 📞 Support
+## 📄 License
 
-Pour toute question ou problème :
-- Ouvrez une issue sur GitHub
-- Contactez-moi via mon portfolio
-
----
-
-⭐ **N'oubliez pas de donner une étoile au projet si vous l'aimez !**
+MIT License. See `LICENSE`.

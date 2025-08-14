@@ -183,9 +183,9 @@ def main():
     dl_paths = maybe_download_datasets()
     prepare_combined_dataset(dl_paths)
 
-    # Limit to a core set of classes if available (simpler task -> higher accuracy)
-    available_core = [c for c in essential_classes if (COMBINED_DATA / c).exists()]
-    class_filter = available_core if available_core else None
+    # Use ALL classes present in COMBINED_DATA (no restriction),
+    # so the model/labels reflect the full dataset you provide.
+    class_filter = None
 
     # Build datasets (optionally restricting to filtered classes)
     ds_kwargs = dict(

@@ -32,7 +32,9 @@ class SimpleFlowerClassifier:
                 "pink": [(140, 50, 50), (170, 255, 255)]
             },
             "sunflower": {
-                "yellow": [(20, 100, 100), (30, 255, 255)]
+                "yellow": [(20, 100, 100), (35, 255, 255)],
+                # Brown center of sunflower (HSV ranges for brown/orange-brown)
+                "brown": [(5, 100, 40), (20, 255, 180)]
             },
             "tulip": {
                 "red": [(0, 50, 50), (10, 255, 255)],
@@ -148,14 +150,27 @@ class SimpleFlowerClassifier:
             
             # Color-based scoring
             if f"{flower_name}_total" in color_analysis:
-                color_score = color_analysis[f"{flower_name}_total"]
+                # Normalize by number of color ranges to avoid bias toward classes
+                # with more defined color bands (e.g., tulip has more than rose)
+                ranges_count = max(1, len(self.color_ranges.get(flower_name, {})))
+                color_score = color_analysis[f"{flower_name}_total"] / ranges_count
                 score += color_score * 0.7  # 70% weight for colors
             
             # Shape-based scoring
-            if flower_name in ["daisy", "sunflower"]:
-                # These flowers are typically more circular
+            if flower_name == "daisy":
+                # Daisies are typically highly circular
                 if shape_analysis["circularity"] > 0.6:
                     score += 1000
+            elif flower_name == "sunflower":
+                # Sunflowers have yellow petals and a brown center; usually less perfectly circular
+                # Bonus if both yellow and brown are strong
+                yellow = color_analysis.get("yellow", 0)
+                brown = color_analysis.get("brown", 0)
+                if yellow > 1500 and brown > 800:
+                    score += 1200
+                # Slight penalty if too circular (to avoid confusion with dandelion)
+                if shape_analysis["circularity"] > 0.65:
+                    score -= 400
             elif flower_name in ["rose", "tulip"]:
                 # These flowers have more complex shapes
                 if shape_analysis["total_contours"] > 5:

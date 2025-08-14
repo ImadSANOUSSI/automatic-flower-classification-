@@ -129,12 +129,31 @@ class AdvancedFlowerClassifier:
                 confidence = float(np.max(preds))
                 flower_name_en = self.class_names[class_id] if class_id < len(self.class_names) else str(class_id)
                 flower_name_fr = self._to_french(flower_name_en)
-                description = self._generate_description(class_id, confidence, {"model":"tf_efficientnet"})
+                # Provide default analysis details so _generate_description doesn't fail
+                analysis_details = {
+                    "color_analysis": {
+                        "dominant_colors": [],
+                        "color_variety": 0.0,
+                        "brightness": 0.0,
+                    },
+                    "shape_analysis": {
+                        "complexity": 0.0,
+                        "symmetry": 0.0,
+                        "area_coverage": 0.0,
+                    },
+                    "texture_analysis": {
+                        "smoothness": 0.0,
+                        "regularity": 0.0,
+                    },
+                    "model": "tf_efficientnet",
+                }
+                description = self._generate_description(class_id, confidence, analysis_details)
                 return {
                     "class_id": class_id,
                     "flower_name_en": flower_name_en,
                     "flower_name_fr": flower_name_fr,
                     "confidence": confidence,
+                    "analysis_details": analysis_details,
                     "description": description,
                     "features_used": ["deep_learning"]
                 }
@@ -180,11 +199,37 @@ class AdvancedFlowerClassifier:
 
     def _to_french(self, name_en: str) -> str:
         mapping = {
+            # Core
             "daisy": "marguerite",
             "dandelion": "pissenlit",
             "rose": "rose",
             "sunflower": "tournesol",
-            "tulip": "tulipe"
+            "tulip": "tulipe",
+            # Common garden & wild
+            "lavender": "lavande",
+            "marigold": "œillet d'inde",
+            "chrysanthemum": "chrysanthème",
+            # Tropical & exotic
+            "orchid": "orchidée",
+            "hibiscus": "hibiscus",
+            "bird of paradise": "oiseau de paradis",
+            "bird_of_paradise": "oiseau de paradis",
+            "strelitzia": "strelitzia",
+            "plumeria": "frangipanier",
+            "anthurium": "anthurium",
+            # Spring bulbs
+            "hyacinth": "jacinthe",
+            "crocus": "crocus",
+            "lily": "lys",
+            "iris": "iris",
+            # Dataset-friendly
+            "daffodil": "jonquille",
+            "poppy": "coquelicot",
+            "bluebell": "jacinthe des bois",
+            "snowdrop": "perce-neige",
+            "camellia": "camélia",
+            "lotus": "lotus",
+            "peony": "pivoine",
         }
         return mapping.get(name_en.lower(), name_en)
     

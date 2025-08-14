@@ -1,18 +1,8 @@
-# 🌸 Minimal runtime dependencies for Streamlit Cloud (Python 3.10)
-
-# Web app
+﻿# Streamlit Cloud minimal deps (Python 3.13, no TensorFlow)
 streamlit>=1.32.0
-
-# Core CV/ML
-opencv-python-headless==4.8.1.78
-numpy>=1.24.0,<2.0
-scikit-learn>=1.3.0
+numpy>=2.0.0,<3.0.0
+opencv-python-headless==4.10.0.84
+scikit-learn>=1.7.0
 pillow>=10.0.0
-
-# Optional deep model (advanced classifier)
-tensorflow==2.15.0
-keras==2.15.0
-
-# Light utilities
 requests>=2.31.0
 tqdm>=4.66.0

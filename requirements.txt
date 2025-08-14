@@ -1,47 +1,18 @@
-# 🌸 Automatic Flower Classification - Dependencies
-# NOTE: Pinned for Streamlit Cloud compatibility
-# - Python set via runtime.txt (3.10)
-# - Use headless OpenCV
-# - Ensure NumPy < 2.0 (TF 2.15 compatible)
+# 🌸 Minimal runtime dependencies for Streamlit Cloud (Python 3.10)
 
-# Deep Learning & Computer Vision
-tensorflow==2.15.0
-keras==2.15.0
-opencv-python-headless==4.8.1.78
-pillow>=10.0.0
-
-# App
+# Web app
 streamlit>=1.32.0
 
-# Data Processing
+# Core CV/ML
+opencv-python-headless==4.8.1.78
 numpy>=1.24.0,<2.0
-pandas>=2.0.0
 scikit-learn>=1.3.0
+pillow>=10.0.0
 
-# FAISS for Similarity Search
-faiss-cpu>=1.7.4
+# Optional deep model (advanced classifier)
+tensorflow==2.15.0
+keras==2.15.0
 
-# LLaMA Integration
-transformers>=4.35.0
-torch>=2.0.0
-accelerate>=0.24.0
-
-# Datasets
-kagglehub>=0.2.5
-
-# Web App (Streamlit only)
-# (Flask removed)
-
-# Utilities
+# Light utilities
 requests>=2.31.0
 tqdm>=4.66.0
-matplotlib>=3.7.0
-seaborn>=0.12.0
-
-# Development & Testing
-pytest>=7.4.0
-black>=23.0.0
-flake8>=6.0.0
-
-# Environment
-python-dotenv>=1.0.0
